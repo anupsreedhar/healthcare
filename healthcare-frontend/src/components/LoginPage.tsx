@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import api from "../services/api";
-import { useAuth } from "../context/AuthContext";
+import api from "../services/api.ts";
+import { useAuth } from "../context/AuthContext.tsx";
 
 const LoginPage: React.FC = () => {
   const { login } = useAuth();

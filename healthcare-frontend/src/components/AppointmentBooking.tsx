@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import api from "../services/api";
-import { Appointment } from "../types/Appointment";
+import api from "../services/api.ts";
+import { Appointment } from "../types/Appointment.ts";
 
 interface Doctor {
   id: number;

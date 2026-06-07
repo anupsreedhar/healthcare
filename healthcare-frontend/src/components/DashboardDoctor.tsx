@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import api from "../services/api";
-import { Appointment } from "../types/Appointment";
+import api from "../services/api.ts";
+import { Appointment } from "../types/Appointment.ts";
 
 const DashboardDoctor: React.FC = () => {
   const [appointments, setAppointments] = useState<Appointment[]>([]);

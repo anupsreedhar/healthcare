@@ -1,12 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import LoginPage from "./components/LoginPage";
-import RegisterPage from "./components/RegisterPage";
-import DashboardPatient from "./components/DashboardPatient";
-import DashboardDoctor from "./components/DashboardDoctor";
-import AppointmentBooking from "./components/AppointmentBooking";
-import { AuthProvider } from "./context/AuthContext";
-import PrivateRoute from "./route/PrivateRoute";
+import LoginPage from "./components/LoginPage.tsx";
+import RegisterPage from "./components/RegisterPage.tsx";
+import DashboardPatient from "./components/DashboardPatient.tsx";
+import DashboardDoctor from "./components/DashboardDoctor.tsx";
+import AppointmentBooking from "./components/AppointmentBooking.tsx";
+import { AuthProvider } from "./context/AuthContext.tsx";
+import PrivateRoute from "./route/PrivateRoute.tsx";
 
 const App: React.FC = () => {
   return (

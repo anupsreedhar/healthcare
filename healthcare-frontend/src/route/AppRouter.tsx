@@ -1,12 +1,12 @@
 import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import LoginPage from "../components/LoginPage";
-import RegisterPage from "../components/RegisterPage";
-import DashboardPatient from "../components/DashboardPatient";
-import DashboardDoctor from "../components/DashboardDoctor";
-import AppointmentBooking from "../components/AppointmentBooking";
-import PrivateRoute from "./PrivateRoute";
-import { getUserRole } from "../services/auth";
+import LoginPage from "../components/LoginPage.tsx";
+import RegisterPage from "../components/RegisterPage.tsx";
+import DashboardPatient from "../components/DashboardPatient.tsx";
+import DashboardDoctor from "../components/DashboardDoctor.tsx";
+import AppointmentBooking from "../components/AppointmentBooking.tsx";
+import PrivateRoute from "./PrivateRoute.tsx";
+import { getUserRole } from "../services/auth.ts";
 
 const AppRouter: React.FC = () => {
   const role = getUserRole();
