@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: healthcare-backend
+
+  profiles:
+    active: local   # default profile when running locally
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  metrics:
+    tags:
+      application: healthcare-backend

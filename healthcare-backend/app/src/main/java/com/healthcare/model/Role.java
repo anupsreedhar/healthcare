@@ -1,0 +1,15 @@
+package com.healthcare.model;
+
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "roles")
+public class Role {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name; // "PATIENT", "DOCTOR", "ADMIN"
+
+    // getters and setters
+}
+
