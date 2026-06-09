@@ -1,6 +1,10 @@
 package com.healthcare.services;
 
+import com.healthcare.model.Doctor;
+import com.healthcare.model.Patient;
 import com.healthcare.model.User;
+import com.healthcare.repository.DoctorRepository;
+import com.healthcare.repository.PatientRepository;
 import com.healthcare.repository.UserRepository;
 import com.healthcare.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +19,34 @@ public class AuthService {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private PatientRepository patientRepository;
+    @Autowired
+    private DoctorRepository doctorRepository;
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private JwtUtil jwtUtil;
 
     public User register(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+
+        // Automatically create Patient or Doctor record based on role
+        if ("PATIENT".equalsIgnoreCase(savedUser.getRole())) {
+            Patient patient = new Patient();
+            patient.setUser(savedUser);
+            patient.setEmail(savedUser.getEmail());
+            patient.setName(savedUser.getUsername()); // Use username as name for now
+            patientRepository.save(patient);
+        } else if ("DOCTOR".equalsIgnoreCase(savedUser.getRole())) {
+            Doctor doctor = new Doctor();
+            doctor.setUser(savedUser);
+            doctor.setEmail(savedUser.getEmail());
+            doctor.setName(savedUser.getUsername()); // Use username as name for now
+            doctor.setSpecialization("General"); // Default specialization
+            doctorRepository.save(doctor);
+        }
+
+        return savedUser;
     }
 
     public String login(String username, String password) {
@@ -31,13 +57,7 @@ public class AuthService {
             throw new RuntimeException("Invalid credentials");
         }
 
-        return jwtUtil.generateToken(
-                new org.springframework.security.core.userdetails.User(
-                        user.getUsername(),
-                        user.getPassword(),
-                        List.of(new SimpleGrantedAuthority(user.getRole()))
-                )
-        );
+          return jwtUtil.generateToken(user);
     }
 }
 

@@ -3,6 +3,7 @@ package com.healthcare.security;
 import com.healthcare.repository.UserRepository;
 import com.healthcare.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
-                user.getPasswordHash(),
+                user.getPassword(),
                 List.of(new SimpleGrantedAuthority(user.getRole()))
         );
     }

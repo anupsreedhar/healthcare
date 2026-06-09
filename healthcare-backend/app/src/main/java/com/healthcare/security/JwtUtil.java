@@ -1,16 +1,29 @@
 package com.healthcare.security;
 
 
+import com.healthcare.model.Doctor;
+import com.healthcare.model.Patient;
+import com.healthcare.model.User;
+import com.healthcare.repository.DoctorRepository;
+import com.healthcare.repository.PatientRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
 import java.util.Date;
+import java.util.Optional;
 
 @Component
 public class JwtUtil {
+
+    @Autowired
+    private PatientRepository patientRepository;
+    
+    @Autowired
+    private DoctorRepository doctorRepository;
 
     private final String SECRET_KEY = "mysecretkey123456789012345678901234567890"; // at least 32 chars
     private final long EXPIRATION_TIME = 1000 * 60 * 60; // 1 hour
@@ -19,10 +32,22 @@ public class JwtUtil {
         return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
     }
 
-    public String generateToken(UserDetails userDetails) {
-        return Jwts.builder()
-                .setSubject(userDetails.getUsername())
-                .claim("role", userDetails.getAuthorities().toString())
+    public String generateToken(User user) {
+        JwtBuilder builder = Jwts.builder()
+                .setSubject(user.getUsername())
+                .claim("role", user.getRole())
+                .claim("userId", user.getId());
+        
+        // Add patientId or doctorId based on role
+        if ("PATIENT".equalsIgnoreCase(user.getRole())) {
+            Optional<Patient> patient = patientRepository.findByUser(user);
+            patient.ifPresent(p -> builder.claim("patientId", p.getId()));
+        } else if ("DOCTOR".equalsIgnoreCase(user.getRole())) {
+            Optional<Doctor> doctor = doctorRepository.findByUser(user);
+            doctor.ifPresent(d -> builder.claim("doctorId", d.getId()));
+        }
+        
+        return builder
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
