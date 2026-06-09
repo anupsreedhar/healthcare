@@ -21,13 +21,35 @@ public class PatientService {
 
     public Patient updatePatient(Long id, Patient updated) {
         Patient patient = getPatient(id);
-        patient.setName(updated.getName());
-        patient.setEmail(updated.getEmail());
+        if (updated.getDateOfBirth() != null) {
+            patient.setDateOfBirth(updated.getDateOfBirth());
+        }
+        if (updated.getGender() != null) {
+            patient.setGender(updated.getGender());
+        }
+        if (updated.getAddress() != null) {
+            patient.setAddress(updated.getAddress());
+        }
+        if (updated.getMedicalHistory() != null) {
+            patient.setMedicalHistory(updated.getMedicalHistory());
+        }
+        if (updated.getInsuranceNumber() != null) {
+            patient.setInsuranceNumber(updated.getInsuranceNumber());
+        }
+        // Update user information if provided
+        if (updated.getUser() != null) {
+            if (updated.getUser().getName() != null) {
+                patient.getUser().setName(updated.getUser().getName());
+            }
+            if (updated.getUser().getEmail() != null) {
+                patient.getUser().setEmail(updated.getUser().getEmail());
+            }
+        }
         return patientRepository.save(patient);
     }
 
     public List<Appointment> getAppointments(Long patientId) {
-        return appointmentRepository.findByPatientId(patientId);
+        return appointmentRepository.findByPatientPatientId(patientId);
     }
 }
 

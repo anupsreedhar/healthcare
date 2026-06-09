@@ -34,17 +34,21 @@ public class JwtUtil {
 
     public String generateToken(User user) {
         JwtBuilder builder = Jwts.builder()
-                .setSubject(user.getUsername())
+                .setSubject(user.getEmail())
                 .claim("role", user.getRole())
                 .claim("userId", user.getId());
         
         // Add patientId or doctorId based on role
         if ("PATIENT".equalsIgnoreCase(user.getRole())) {
-            Optional<Patient> patient = patientRepository.findByUser(user);
-            patient.ifPresent(p -> builder.claim("patientId", p.getId()));
+            Patient patient = patientRepository.findByUserId(user.getId());
+            if (patient != null) {
+                builder.claim("patientId", patient.getPatientId());
+            }
         } else if ("DOCTOR".equalsIgnoreCase(user.getRole())) {
-            Optional<Doctor> doctor = doctorRepository.findByUser(user);
-            doctor.ifPresent(d -> builder.claim("doctorId", d.getId()));
+            Doctor doctor = doctorRepository.findByUserId(user.getId());
+            if (doctor != null) {
+                builder.claim("doctorId", doctor.getDoctorId());
+            }
         }
         
         return builder

@@ -29,13 +29,29 @@ public class DoctorService {
 
     public Doctor updateDoctor(Long id, Doctor updated) {
         Doctor doctor = getDoctor(id);
-        doctor.setName(updated.getName());
-        doctor.setSpecialization(updated.getSpecialization());
+        if (updated.getSpecialization() != null) {
+            doctor.setSpecialization(updated.getSpecialization());
+        }
+        if (updated.getExperienceYears() != null) {
+            doctor.setExperienceYears(updated.getExperienceYears());
+        }
+        if (updated.getHospitalAffiliation() != null) {
+            doctor.setHospitalAffiliation(updated.getHospitalAffiliation());
+        }
+        // Update user information if provided
+        if (updated.getUser() != null) {
+            if (updated.getUser().getName() != null) {
+                doctor.getUser().setName(updated.getUser().getName());
+            }
+            if (updated.getUser().getEmail() != null) {
+                doctor.getUser().setEmail(updated.getUser().getEmail());
+            }
+        }
         return doctorRepository.save(doctor);
     }
 
     public List<Appointment> getAppointments(Long doctorId) {
-        return appointmentRepository.findByDoctorId(doctorId);
+        return appointmentRepository.findByDoctorDoctorId(doctorId);
     }
 }
 

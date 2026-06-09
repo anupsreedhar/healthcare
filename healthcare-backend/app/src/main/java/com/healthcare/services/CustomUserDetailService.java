@@ -1,5 +1,6 @@
 package com.healthcare.services;
 
+import com.healthcare.model.CustomUserDetails;
 import com.healthcare.model.User;
 import com.healthcare.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

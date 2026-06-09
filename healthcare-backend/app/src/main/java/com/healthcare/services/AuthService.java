@@ -34,14 +34,10 @@ public class AuthService {
         if ("PATIENT".equalsIgnoreCase(savedUser.getRole())) {
             Patient patient = new Patient();
             patient.setUser(savedUser);
-            patient.setEmail(savedUser.getEmail());
-            patient.setName(savedUser.getUsername()); // Use username as name for now
             patientRepository.save(patient);
         } else if ("DOCTOR".equalsIgnoreCase(savedUser.getRole())) {
             Doctor doctor = new Doctor();
             doctor.setUser(savedUser);
-            doctor.setEmail(savedUser.getEmail());
-            doctor.setName(savedUser.getUsername()); // Use username as name for now
             doctor.setSpecialization("General"); // Default specialization
             doctorRepository.save(doctor);
         }
@@ -49,8 +45,8 @@ public class AuthService {
         return savedUser;
     }
 
-    public String login(String username, String password) {
-        User user = userRepository.findByUsername(username)
+    public String login(String email, String password) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (!passwordEncoder.matches(password, user.getPassword())) {
