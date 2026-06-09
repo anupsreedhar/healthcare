@@ -1,5 +1,13 @@
 package com.healthcare.services;
 
+import com.healthcare.model.Appointment;
+import com.healthcare.model.Doctor;
+import com.healthcare.repository.AppointmentRepository;
+import com.healthcare.repository.DoctorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
+
 @Service
 public class DoctorService {
 

@@ -1,8 +1,12 @@
 package com.healthcare.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
+
 import java.time.LocalDateTime;
 
+
+@Data
 @Entity
 @Table(name = "appointments")
 public class Appointment {

@@ -16,9 +16,13 @@ dependencies {
     // Core Spring Boot
     implementation 'org.springframework.boot:spring-boot-starter-web'
     
-    // Database
+    // Database (JPA + Postgres)
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'org.postgresql:postgresql:42.7.3'
+
+    //lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
 
     // Security (for JWT now, Keycloak later)
     implementation 'org.springframework.boot:spring-boot-starter-security'

@@ -1,4 +1,12 @@
 package com.healthcare.services;
+import com.healthcare.model.Appointment;
+import com.healthcare.model.Patient;
+import com.healthcare.repository.AppointmentRepository;
+import com.healthcare.repository.PatientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class PatientService {

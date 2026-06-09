@@ -12,6 +12,10 @@ public class HealthcareBackendApplication {
     public static void main(String[] args) {
         SpringApplication.run(HealthcareBackendApplication.class, args);
     }
+    public Object getGreeting() {
+        System.out.println("Hello World!");
+        return "app should have a greeting";
+    }
 }
 
 

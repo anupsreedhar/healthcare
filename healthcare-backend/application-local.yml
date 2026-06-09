@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/healthcare
+    url: jdbc:postgresql://localhost:5433/healthcare
     username: postgres
-    password: secret
+    password: postgres
     driver-class-name: org.postgresql.Driver
 
   jpa:

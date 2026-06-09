@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import api from "../services/api.ts";
 import { Appointment } from "../types/Appointment.ts";
+import { useNavigate } from "react-router-dom";
+import "../styles/AppointmentBooking.css";
 
 interface Doctor {
   id: number;
@@ -12,7 +14,8 @@ const AppointmentBooking: React.FC = () => {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [selectedDoctor, setSelectedDoctor] = useState<number | null>(null);
   const [date, setDate] = useState("");
-  const [status] = useState("BOOKED"); // default status when booking
+  const [status] = useState("BOOKED");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -33,20 +36,21 @@ const AppointmentBooking: React.FC = () => {
       const appointment: Partial<Appointment> = {
         appointmentDate: date,
         status,
-        patient: { id: Number(patientId), name: "" }, // name not required for booking
+        patient: { id: Number(patientId), name: "" },
         doctor: { id: selectedDoctor!, name: "", specialization: "" }
       };
 
       const response = await api.post("/appointments", appointment);
       alert("Appointment booked successfully!");
       console.log(response.data);
+      navigate("/patient/dashboard"); // ✅ go back to dashboard after booking
     } catch (error) {
       console.error("Error booking appointment", error);
     }
   };
 
   return (
-    <div>
+    <div className="appointment-container">
       <h2>Book Appointment</h2>
       <form onSubmit={handleSubmit}>
         <label>Select Doctor:</label>
@@ -73,6 +77,12 @@ const AppointmentBooking: React.FC = () => {
 
         <button type="submit">Book Appointment</button>
       </form>
+
+      {/* ✅ Navigation buttons */}
+      <div className="appointment-actions">
+        <button onClick={() => navigate("/patient/dashboard")}>Back to Dashboard</button>
+        <button onClick={() => navigate("/")}>Logout</button>
+      </div>
     </div>
   );
 };

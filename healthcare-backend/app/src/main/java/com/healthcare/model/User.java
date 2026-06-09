@@ -2,7 +2,10 @@ package com.healthcare.model;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
 
+
+@Data
 @Entity
 @Table(name = "users")
 public class User {
@@ -11,7 +14,7 @@ public class User {
 
     private String username;
     private String email;
-    private String passwordHash;
+    private String password;
     private String role; // "PATIENT" or "DOCTOR"
 
     // getters and setters

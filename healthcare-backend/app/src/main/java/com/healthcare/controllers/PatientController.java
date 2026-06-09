@@ -1,4 +1,12 @@
 package com.healthcare.controllers;
+import com.healthcare.model.Appointment;
+import com.healthcare.model.Patient;
+import com.healthcare.services.PatientService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/patients")
