@@ -5,6 +5,17 @@ spring:
   profiles:
     active: local   # default profile when running locally
 
+# Swagger/OpenAPI Configuration
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    tryItOutEnabled: true
+    filter: true
+
 management:
   endpoints:
     web:

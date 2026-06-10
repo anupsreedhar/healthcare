@@ -1,5 +1,8 @@
 package com.healthcare.services;
 
+import com.healthcare.dto.DoctorRegisterRequest;
+import com.healthcare.dto.PatientRegisterRequest;
+import com.healthcare.dto.RegisterRequest;
 import com.healthcare.model.Doctor;
 import com.healthcare.model.Patient;
 import com.healthcare.model.User;
@@ -26,23 +29,57 @@ public class AuthService {
     @Autowired private PasswordEncoder passwordEncoder;
     @Autowired private JwtUtil jwtUtil;
 
-    public User register(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public User registerPatient(PatientRegisterRequest request) {
+        // Create and save User
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setName(request.getName());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole("PATIENT");
         User savedUser = userRepository.save(user);
 
-        // Automatically create Patient or Doctor record based on role
-        if ("PATIENT".equalsIgnoreCase(savedUser.getRole())) {
-            Patient patient = new Patient();
-            patient.setUser(savedUser);
-            patientRepository.save(patient);
-        } else if ("DOCTOR".equalsIgnoreCase(savedUser.getRole())) {
-            Doctor doctor = new Doctor();
-            doctor.setUser(savedUser);
-            doctor.setSpecialization("General"); // Default specialization
-            doctorRepository.save(doctor);
-        }
+        // Create and save Patient with additional fields
+        Patient patient = new Patient();
+        patient.setUser(savedUser);
+        patient.setDateOfBirth(request.getDateOfBirth());
+        patient.setGender(request.getGender());
+        patient.setAddress(request.getAddress());
+        patient.setMedicalHistory(request.getMedicalHistory());
+        patient.setInsuranceNumber(request.getInsuranceNumber());
+        patientRepository.save(patient);
 
         return savedUser;
+    }
+
+    public User registerDoctor(DoctorRegisterRequest request) {
+        // Create and save User
+        User user = new User();
+        user.setEmail(request.getEmail());
+        user.setName(request.getName());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setRole("DOCTOR");
+        User savedUser = userRepository.save(user);
+
+        // Create and save Doctor with additional fields
+        Doctor doctor = new Doctor();
+        doctor.setUser(savedUser);
+        doctor.setSpecialization(request.getSpecialization() != null ? request.getSpecialization() : "General");
+        doctor.setExperienceYears(request.getExperienceYears());
+        doctor.setHospitalAffiliation(request.getHospitalAffiliation());
+        doctorRepository.save(doctor);
+
+        return savedUser;
+    }
+
+    // Generic registration method for backward compatibility
+    public User register(RegisterRequest request) {
+        if ("PATIENT".equalsIgnoreCase(request.getRole())) {
+            throw new RuntimeException("Please use /auth/register/patient endpoint with patient details");
+        } else if ("DOCTOR".equalsIgnoreCase(request.getRole())) {
+            throw new RuntimeException("Please use /auth/register/doctor endpoint with doctor details");
+        }
+
+        throw new RuntimeException("Invalid role. Must be PATIENT or DOCTOR");
     }
 
     public String login(String email, String password) {
