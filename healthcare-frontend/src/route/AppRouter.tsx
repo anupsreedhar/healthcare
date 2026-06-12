@@ -5,8 +5,10 @@ import RegisterPage from "../components/RegisterPage.tsx";
 import DashboardPatient from "../components/DashboardPatient.tsx";
 import DashboardDoctor from "../components/DashboardDoctor.tsx";
 import AppointmentBooking from "../components/AppointmentBooking.tsx";
+import DoctorProfile from "../components/DoctorProfile.tsx";
 import PrivateRoute from "./PrivateRoute.tsx";
 import { getUserRole } from "../services/auth.ts";
+
 
 const AppRouter: React.FC = () => {
   const role = getUserRole();
@@ -34,6 +36,14 @@ const AppRouter: React.FC = () => {
           </PrivateRoute>
         }
       />
+      <Route
+        path="/doctor/profile"
+        element={
+         <PrivateRoute allowedRoles={["DOCTOR"]}>
+            <DoctorProfile />
+        </PrivateRoute>
+     }
+     />
 
       {/* Doctor routes */}
       <Route
@@ -56,6 +66,8 @@ const AppRouter: React.FC = () => {
             : <Navigate to="/" />
         }
       />
+
+
     </Routes>
   );
 };
