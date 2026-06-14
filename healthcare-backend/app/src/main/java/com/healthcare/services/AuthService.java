@@ -10,6 +10,8 @@ import com.healthcare.repository.DoctorRepository;
 import com.healthcare.repository.PatientRepository;
 import com.healthcare.repository.UserRepository;
 import com.healthcare.security.JwtUtil;
+
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Log4j2
 @Service
 public class AuthService {
 

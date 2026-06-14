@@ -5,11 +5,12 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "doctor")
+@Table(name = "doctors")
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +20,9 @@ public class Doctor {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
+    @Column(length = 20)
+    private String gender;
+
     @Column(nullable = false, length = 100)
     private String specialization;
 
@@ -26,6 +30,8 @@ public class Doctor {
 
     @Column(length = 150)
     private String hospitalAffiliation;
+
+    private LocalDate dateOfBirth;
 
     @CreationTimestamp
     @Column(name = "created_date", updatable = false)

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "patient")
+@Table(name = "patients")
 public class Patient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class Patient {
     @Column(length = 255)
     private String address;
 
-    @Lob
+    @Column(name = "medical_history", columnDefinition = "TEXT")
     private String medicalHistory;
 
     @Column(length = 100)

@@ -1,5 +1,6 @@
 package com.healthcare.controllers;
 
+import com.healthcare.dto.AppointmentRequestDTO;
 import com.healthcare.model.Appointment;
 import com.healthcare.services.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +15,8 @@ public class AppointmentController {
     private AppointmentService appointmentService;
 
     @PostMapping
-    public ResponseEntity<Appointment> bookAppointment(@RequestBody Appointment appointment) {
-        return ResponseEntity.ok(appointmentService.bookAppointment(appointment));
+    public ResponseEntity<Appointment> bookAppointment(@RequestBody AppointmentRequestDTO appointmentRequestDTO) {
+        return ResponseEntity.ok(appointmentService.bookAppointment(appointmentRequestDTO));
     }
 
     @GetMapping("/{id}")

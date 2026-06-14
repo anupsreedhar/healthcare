@@ -44,3 +44,38 @@ CREATE TABLE appointments (
                               FOREIGN KEY (doctor_id) REFERENCES doctor(id) ON DELETE CASCADE,
                               FOREIGN KEY (patient_id) REFERENCES patient(id) ON DELETE CASCADE
 );
+
+-- ===========================
+-- Payment Table
+-- ===========================
+CREATE TABLE payment (
+                         payment_id BIGSERIAL PRIMARY KEY,
+                         appointment_id BIGINT NOT NULL,
+                         patient_id BIGINT NOT NULL,
+                         doctor_id BIGINT NOT NULL,
+                         amount NUMERIC(10,2) NOT NULL,
+                         currency VARCHAR(10) DEFAULT 'INR',
+                         status VARCHAR(20) NOT NULL, -- e.g. INITIATED, SUCCESS, FAILED, REFUNDED
+                         transaction_reference VARCHAR(100), -- gateway/mock reference
+                         created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                         updated_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+                         CONSTRAINT fk_payment_appointment FOREIGN KEY (appointment_id) REFERENCES appointment(appointment_id),
+                         CONSTRAINT fk_payment_patient FOREIGN KEY (patient_id) REFERENCES patient(patient_id),
+                         CONSTRAINT fk_payment_doctor FOREIGN KEY (doctor_id) REFERENCES doctor(doctor_id)
+);
+
+-- ===========================
+-- Payment Audit Table
+-- ===========================
+CREATE TABLE payment_audit (
+                               audit_id BIGSERIAL PRIMARY KEY,
+                               payment_id BIGINT NOT NULL,
+                               request_payload TEXT,   -- raw JSON/XML request
+                               response_payload TEXT,  -- raw JSON/XML response
+                               status_code INT,
+                               message VARCHAR(255),
+                               timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+                               CONSTRAINT fk_audit_payment FOREIGN KEY (payment_id) REFERENCES payment(payment_id)
+);
