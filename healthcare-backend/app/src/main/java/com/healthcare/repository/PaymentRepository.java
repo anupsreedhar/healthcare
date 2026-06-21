@@ -2,11 +2,11 @@ package com.healthcare.repository;
 
 import com.healthcare.model.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+
 
 import java.util.List;
 
-@Repository
+
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
     // Find all payments for a given patient

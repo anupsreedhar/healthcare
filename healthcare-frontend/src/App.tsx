@@ -2,11 +2,13 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import LoginPage from "./components/LoginPage.tsx";
 import RegisterPage from "./components/RegisterPage.tsx";
-import DashboardPatient from "./components/DashboardPatient.tsx";
-import DashboardDoctor from "./components/DashboardDoctor.tsx";
+import DashboardPatient from "./components/PatientDashboard.tsx";
+import DashboardDoctor from "./components/DoctorDashboard.tsx";
 import AppointmentBooking from "./components/AppointmentBooking.tsx";
+import AppointmentTab from "./components/tabs/AppointmentTab.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import PrivateRoute from "./route/PrivateRoute.tsx";
+import DoctorProfile from "./components/DoctorProfile.tsx";
 
 const App: React.FC = () => {
   return (
@@ -24,8 +26,12 @@ const App: React.FC = () => {
               <PrivateRoute allowedRoles={["PATIENT"]}>
                 <DashboardPatient />
               </PrivateRoute>
-            }
-          />
+            }>
+              {/* Child routes inside PatientDashboard */}
+              <Route path="appointments" element={<AppointmentTab />} />
+              <Route path="appointments/book" element={<AppointmentBooking />} />
+          </Route>
+
           <Route
             path="/doctor/dashboard"
             element={
@@ -42,6 +48,14 @@ const App: React.FC = () => {
               </PrivateRoute>
             }
           />
+          <Route
+            path="/doctor/profile"
+            element={
+            <PrivateRoute allowedRoles={["DOCTOR"]}>
+                <DoctorProfile />
+        </PrivateRoute>
+     }
+     />
         </Routes>
       </Router>
     </AuthProvider>

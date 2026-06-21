@@ -1,10 +1,13 @@
 package com.healthcare.services;
 
+import com.healthcare.dto.DoctorDashboardDTO;
 import com.healthcare.dto.DoctorProfileDTO;
 import com.healthcare.model.Appointment;
 import com.healthcare.model.Doctor;
+import com.healthcare.model.Payment;
 import com.healthcare.repository.AppointmentRepository;
 import com.healthcare.repository.DoctorRepository;
+import com.healthcare.repository.PaymentRepository;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,8 +18,18 @@ import java.util.stream.Collectors;
 @Service
 public class DoctorService {
 
-    @Autowired private DoctorRepository doctorRepository;
-    @Autowired private AppointmentRepository appointmentRepository;
+    private final DoctorRepository doctorRepository;
+    private final AppointmentRepository appointmentRepository;
+    private final PaymentRepository paymentRepository;
+
+
+    public DoctorService(DoctorRepository doctorRepository,
+                        AppointmentRepository appointmentRepository,
+                        PaymentRepository paymentRepository) {
+        this.doctorRepository = doctorRepository;
+        this.appointmentRepository = appointmentRepository;
+        this.paymentRepository = paymentRepository;
+    }
 
     public List<DoctorProfileDTO> getAllDoctors() {
         List<Doctor> doctors = doctorRepository.findAll();
@@ -72,6 +85,25 @@ public class DoctorService {
 
     public List<Appointment> getAppointments(Long doctorId) {
         return appointmentRepository.findByDoctorDoctorId(doctorId);
+    }
+
+    public List<DoctorDashboardDTO> getDoctorDashboard(Long doctorId) {
+        List<Appointment> appointments = appointmentRepository.findByDoctorDoctorId(doctorId);
+
+        return appointments.stream().map(appt -> {
+            DoctorDashboardDTO dto = new DoctorDashboardDTO();
+            dto.setAppointmentId(appt.getAppointmentId());
+            dto.setAppointmentDate(appt.getAppointmentDate().toLocalDate().toString());
+            dto.setAppointmentTime(appt.getAppointmentDate().toLocalTime().toString());
+            dto.setPatientName(appt.getPatient().getUser().getName());
+            dto.setPatientMedicalHistorySummary(appt.getPatient().getMedicalHistory());
+
+            Payment payment = paymentRepository.findByAppointment_AppointmentId(appt.getAppointmentId())
+                    .stream().findFirst().orElse(null);
+            dto.setPaymentStatus(payment != null ? payment.getStatus() : "Pending");
+
+            return dto;
+        }).collect(Collectors.toList());
     }
 }
 

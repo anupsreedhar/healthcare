@@ -79,3 +79,33 @@ CREATE TABLE payment_audit (
 
                                CONSTRAINT fk_audit_payment FOREIGN KEY (payment_id) REFERENCES payment(payment_id)
 );
+
+CREATE TABLE department (
+                            id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+                            name VARCHAR(100) NOT NULL UNIQUE
+);
+
+ALTER TABLE doctor
+    ADD COLUMN department_id BIGINT;
+
+ALTER TABLE doctor
+    ADD CONSTRAINT fk_doctor_department
+        FOREIGN KEY (department_id)
+            REFERENCES department(id)
+            ON DELETE SET NULL;
+
+
+INSERT INTO department (name) VALUES
+                                  ('Cardiology'),              -- Heart diseases, ECG, angioplasty
+                                  ('Neurology'),               -- Brain, nerves, spinal cord disorders
+                                  ('Orthopedics'),             -- Bones, joints, fractures, arthritis
+                                  ('Pediatrics'),              -- Infants, children, teenagers
+                                  ('Obstetrics & Gynecology'), -- Pregnancy, delivery, fertility, women’s health
+                                  ('Oncology'),                -- Cancer diagnosis, chemotherapy, radiation
+                                  ('Dermatology'),             -- Skin, hair, nail issues
+                                  ('ENT'),                     -- Ear, Nose, Throat
+                                  ('Ophthalmology'),           -- Eye care, cataracts, vision correction
+                                  ('General Surgery'),         -- Hernia, appendectomy, gallbladder removal
+                                  ('Urology'),                 -- Kidney stones, prostate, urinary system
+                                  ('Psychiatry & Psychology'), -- Mental health, stress, depression
+                                  ('Anesthesiology');          -- Pain management, anesthesia during surgery

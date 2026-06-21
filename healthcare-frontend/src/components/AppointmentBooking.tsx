@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import api from "../services/api.ts";
-import { Appointment } from "../types/Appointment.ts";
+import { Appointment } from "../types/Appointment";
 import { useNavigate } from "react-router-dom";
 import "../styles/AppointmentBooking.css";
 
@@ -8,13 +8,18 @@ interface Doctor {
   id: number;
   name: string;
   specialization: string;
+  consultingFee?: number;
 }
 
-const AppointmentBooking: React.FC = () => {
+interface AppointmentBookingProps {
+  onClose: () => void;
+}
+
+const AppointmentBooking: React.FC<AppointmentBookingProps> = ({onClose}) => {
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [selectedDoctor, setSelectedDoctor] = useState<number | null>(null);
   const [date, setDate] = useState("");
-  const [status] = useState("BOOKED");
+  const [status] = useState("BOOKED"); // default status
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -43,14 +48,15 @@ const AppointmentBooking: React.FC = () => {
       const response = await api.post("/appointments", appointment);
       alert("Appointment booked successfully!");
       console.log(response.data);
-      navigate("/patient/dashboard"); // ✅ go back to dashboard after booking
+      navigate("/patient/dashboard"); // redirect after booking
     } catch (error) {
       console.error("Error booking appointment", error);
+      alert("Booking failed. Please try again.");
     }
   };
 
   return (
-    <div className="appointment-container">
+    <div className="appointment-booking">
       <h2>Book Appointment</h2>
       <form onSubmit={handleSubmit}>
         <label>Select Doctor:</label>
@@ -63,6 +69,7 @@ const AppointmentBooking: React.FC = () => {
           {doctors.map((doc) => (
             <option key={doc.id} value={doc.id}>
               {doc.name} ({doc.specialization})
+              {doc.consultingFee ? ` - Fee: ₹${doc.consultingFee}` : ""}
             </option>
           ))}
         </select>
@@ -75,14 +82,11 @@ const AppointmentBooking: React.FC = () => {
           required
         />
 
+        <button className="back-btn" onClick={onClose}>
+          ← Back to Appointments
+        </button>
         <button type="submit">Book Appointment</button>
       </form>
-
-      {/* ✅ Navigation buttons */}
-      <div className="appointment-actions">
-        <button onClick={() => navigate("/patient/dashboard")}>Back to Dashboard</button>
-        <button onClick={() => navigate("/")}>Logout</button>
-      </div>
     </div>
   );
 };

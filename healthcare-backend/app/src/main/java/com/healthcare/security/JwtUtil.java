@@ -50,6 +50,7 @@ public class JwtUtil {
                 builder.claim("doctorId", doctor.getDoctorId());
             }
         }
+        builder.claim("username", user.getName());
         
         return builder
                 .setIssuedAt(new Date())

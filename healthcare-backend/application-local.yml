@@ -5,10 +5,16 @@ spring:
     password: postgres
     driver-class-name: org.postgresql.Driver
 
+  springdoc:
+    api-docs:
+      path: /api-docs
+    swagger-ui:
+      path: /swagger-ui.html
+
   jpa:
     hibernate:
       ddl-auto: update   # auto-create/update tables based on entities
-    show-sql: true
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -19,10 +25,11 @@ spring:
 
 logging:
   level:
-    root: INFO
-    org.springframework.web: DEBUG
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql: TRACE
+    root: INFO                # show INFO, WARN, ERROR globally
+    org.springframework: ERROR  # only show errors from Spring
+    org.springframework.http.converter: ERROR
+    org.hibernate: ERROR       # only show errors from Hibernate
+    com.healthcare: DEBUG      # show DEBUG, INFO, WARN, ERROR from your app
 
 management:
   endpoints:
