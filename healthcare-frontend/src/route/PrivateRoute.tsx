@@ -24,7 +24,7 @@ const PrivateRoute: React.FC<Props> = ({ children, allowedRoles }) => {
   try {
     const decoded: JwtPayload = jwtDecode(token);
     const userRole = decoded.role.replace(/[\[\]]/g, ""); 
-  console.log("Decoded role:", userRole, "Allowed:", allowedRoles);
+  
     if (!allowedRoles.includes(userRole)) {
       // Redirect to dashboard based on role
       if (userRole === "PATIENT") return <Navigate to="/patient/dashboard" />;

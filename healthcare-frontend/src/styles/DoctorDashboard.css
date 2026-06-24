@@ -1,0 +1,10 @@
+.doctor-dashboard {
+  padding: 20px;
+}
+
+.appointments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+}

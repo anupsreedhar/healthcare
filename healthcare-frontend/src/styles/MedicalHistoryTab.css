@@ -1,0 +1,21 @@
+.medical-history-tab {
+  margin-top: 20px;
+}
+
+.records-list,
+.prescriptions-list {
+  list-style: none;
+  padding: 0;
+  margin-bottom: 20px;
+}
+
+.records-list li,
+.prescriptions-list li {
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
+}
+
+.records-list li strong,
+.prescriptions-list li strong {
+  color: #00796b;
+}

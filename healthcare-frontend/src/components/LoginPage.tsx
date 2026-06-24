@@ -14,8 +14,11 @@ const LoginPage: React.FC = () => {
   interface DecodedToken {
     sub: string;
     role: string;
-    userId?: number;    
+    userId: number; 
+    doctorId: number;
+    patientId: number;   
     exp: number;
+    username: string
   }
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,10 +28,13 @@ const LoginPage: React.FC = () => {
       localStorage.setItem("token", token);
       login(token);
       const decoded: DecodedToken = jwtDecode(token);   
+      localStorage.setItem("username", decoded.username || "");
+      localStorage.setItem("userId", decoded.userId.toString() || "");
+      localStorage.setItem("role", decoded.role.toString() || "");
       if (decoded.role === "PATIENT") {
-        localStorage.setItem("patientId", decoded.userId?.toString() || "");
+        localStorage.setItem("patientId", decoded.patientId.toString() || "");
       } else if (decoded.role === "DOCTOR") {
-        localStorage.setItem("doctorId", decoded.userId?.toString() || "");
+        localStorage.setItem("doctorId", decoded.doctorId.toString() || "");
       }
 
       const role = getUserRole();

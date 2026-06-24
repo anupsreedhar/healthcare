@@ -1,0 +1,26 @@
+.patient-dashboard {
+  padding: 20px;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #e0e0e0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.tabs button.active {
+  background-color: #00796b;
+  color: white;
+}
+
+.tab-content {
+  margin-top: 20px;
+}

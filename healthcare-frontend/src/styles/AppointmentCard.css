@@ -1,0 +1,10 @@
+.appointment-card {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 10px;
+  background-color: #f5f5f5;
+}
+.appointment-card h4 {
+  margin: 0 0 8px;
+}
