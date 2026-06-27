@@ -5,7 +5,7 @@ export interface Appointment {
   status: string;            // e.g. "Scheduled", "Completed", "Cancelled"
   paymentStatus: boolean;    // true if paid
   doctor: {
-    id: number;
+    doctorId: number;
     name: string;
     specialization: string;
     user:{
@@ -15,7 +15,7 @@ export interface Appointment {
   }
   };
   patient: {
-    id: number;
+    patientId: number;
     name: string;
     user:{
     id: number;

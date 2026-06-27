@@ -9,6 +9,7 @@ import AppointmentTab from "./components/tabs/AppointmentTab.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import PrivateRoute from "./route/PrivateRoute.tsx";
 import DoctorProfile from "./components/DoctorProfile.tsx";
+import PatientDetails from "./components/PatientDetails.tsx";
 
 const App: React.FC = () => {
   return (
@@ -53,9 +54,11 @@ const App: React.FC = () => {
             element={
             <PrivateRoute allowedRoles={["DOCTOR"]}>
                 <DoctorProfile />
-        </PrivateRoute>
-     }
-     />
+        </PrivateRoute>       
+           }
+         />
+
+
         </Routes>
       </Router>
     </AuthProvider>

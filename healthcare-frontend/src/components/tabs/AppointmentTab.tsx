@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import api from "../../services/api.ts";
 import AppointmentBooking from "../../components/AppointmentBooking.tsx";
 import { Appointment } from "../../types/Appointment";
 import "../../styles/AppointmentTab.css";
 
-const AppointmentsTab: React.FC = () => {
+interface Props {
+  onPatientClick?: (id: number) => void; // ✅ optional callback for doctor workflow
+}
+
+const AppointmentsTab: React.FC<Props> = ({ onPatientClick }) => {
   const [upcomingAppointments, setUpcomingAppointments] = useState<Appointment[]>([]);
   const [previousAppointments, setPreviousAppointments] = useState<Appointment[]>([]);
   const [role, setRole] = useState<string | null>(null);
@@ -65,7 +70,13 @@ const AppointmentsTab: React.FC = () => {
       {role === "PATIENT" ? (
         <td>Dr. {appt.doctor.user.name}</td>
       ) : (
-        <td>{appt.patient.user.name}</td>
+        <td>
+           <span className="patient-link" onClick={() =>{ console.log("Clicked patient:", appt.patient.patientId); onPatientClick && onPatientClick(appt.patient.patientId)}}
+            style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}
+            >
+              {appt.patient.user.name}
+            </span>
+        </td>
       )}
       <td>{appt.status}</td>
       <td>
@@ -119,7 +130,7 @@ const AppointmentsTab: React.FC = () => {
       ) : (
         <AppointmentBooking
           patientId={localStorage.getItem("patientId")}
-          onClose={() => setShowBooking(false)}   // ✅ Back button handler
+          onClose={() => setShowBooking(false)}
           onBooked={(newAppt) =>
             setUpcomingAppointments([...upcomingAppointments, newAppt])
           }
